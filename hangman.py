@@ -1,6 +1,5 @@
 import random
 
-
 HANGMAN_PICS = ['''
 +---+
     |
@@ -70,22 +69,21 @@ def displayBoard(missedLetters, correctLetters, secretWord):
 def getGuess(alreadyGuessed):
     while True:
         print('Введите букву: ')
-        quess = input()
-        quess = quess.lower()
-        if len(quess) != 1:
-            print('Пожалуйста введите одну букву')
-        elif quess in alreadyGuessed:
-            print('Вы уже называли эту букву. Назовите другую')
-        elif quess not in 'абвгдуужзийклмнопрстуфчцчшщъыьэюя':
-            print('Пожалуйста введите букву')
+        guess = input().lower()
+        if len(guess) != 1:
+            print('Пожалуйста, введите одну букву.')
+        elif guess in alreadyGuessed:
+            print('Вы уже называли эту букву. Назовите другую.')
+        elif guess not in 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
+            print('Пожалуйста, введите букву русского алфавита.')
         else:
-            return quess
+            return guess
 
 def playAgain():
     print('Хотите сыграть еще? (да или нет)')
     return input().lower().startswith('д')
 
-print('В И С Е Л И Ц Ф')
+print('В И С Е Л И Ц А')
 
 missedLetters = ''
 correctLetters = ''
@@ -95,15 +93,16 @@ gameIsDone = False
 while True:
     displayBoard(missedLetters, correctLetters, secretWord)
 
-    quess = getGuess(missedLetters + correctLetters)
+    # Получаем букву от игрока
+    guess = getGuess(missedLetters + correctLetters)
 
-    if quess in secretWord:
-        correctLetters = correctLetters + quess
+    if guess in secretWord:
+        correctLetters += guess
 
+        # Проверяем, угаданы ли все буквы
         foundAllLetters = True
-
         for i in range(len(secretWord)):
-            if secretWord[i] in correctLetters:
+            if secretWord[i] not in correctLetters:
                 foundAllLetters = False
                 break
 
@@ -111,10 +110,12 @@ while True:
             print('Да! Секретное слово - "' + secretWord + '"! Вы угадали!')
             gameIsDone = True
     else:
-        missedLetters = missedLetters + quess
+        missedLetters += guess
 
+        # Если все картинки использованы — игрок проиграл
         if len(missedLetters) == len(HANGMAN_PICS) - 1:
             displayBoard(missedLetters, correctLetters, secretWord)
+            print('Вы исчерпали все попытки!\nНеугаданное слово: "' + secretWord + '"')
             gameIsDone = True
 
     if gameIsDone:
