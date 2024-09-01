@@ -69,7 +69,7 @@ def displayBoard(missedLetters, correctLetters, secretWord):
 
 def getGuess(alreadyGuessed):
     while True:
-        print('Введите букву,')
+        print('Введите букву: ')
         quess = input()
         quess = quess.lower()
         if len(quess) != 1:
