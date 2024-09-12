@@ -118,8 +118,9 @@ if difficulty == 'T':
 
 missedLetters = ''
 correctLetters = ''
-secretWord = getRandomWord(words)
+secretWord, secretSet = getRandomWord(words)
 gameIsDone = False
+
 
 while True:
     displayBoard(missedLetters, correctLetters, secretWord)
@@ -154,6 +155,6 @@ while True:
             missedLetters = ''
             correctLetters = ''
             gameIsDone = False
-            secretWord = getRandomWord(words)
+            secretWord, secretSet = getRandomWord(words)
         else:
             break
