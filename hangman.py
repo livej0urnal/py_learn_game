@@ -57,7 +57,7 @@ words = {'Цвета': 'красный оранжевый желтый зеле�
 def getRandomWord(wordList):
     wordKey = random.choice(list(wordList.keys()))
     wordIndex = random.randint(0, len(wordList[wordKey]) - 1)
-    return wordList[wordKey][wordIndex]
+    return wordList[wordKey][wordIndex], wordKey
 
 
 def displayBoard(missedLetters, correctLetters, secretWord):
@@ -123,6 +123,7 @@ gameIsDone = False
 
 
 while True:
+    print('Секретное слово из набора: ' + secretSet)
     displayBoard(missedLetters, correctLetters, secretWord)
 
     # Получаем букву от игрока
