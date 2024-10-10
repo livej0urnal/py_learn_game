@@ -3,6 +3,7 @@ import random
 NUM_DIGITS = 3
 MAX_GUEST = 10
 
+
 def getSecretNum():
     numbers = list(range(10))
     random.shuffle(numbers)
@@ -10,6 +11,7 @@ def getSecretNum():
     for i in range(NUM_DIGITS):
         secretNum += str(numbers[i])
     return secretNum
+
 
 def getClues(guess, secretNum):
     if guess == secretNum:
@@ -27,6 +29,7 @@ def getClues(guess, secretNum):
     clues.sort()
     return ' '.join(clues)
 
+
 def isOnlyDigits(num):
     if num == '':
         return False
@@ -35,6 +38,7 @@ def isOnlyDigits(num):
         if i not in '0 1 2 3 4 5 6 7 8 9'.split():
             return False
     return True
+
 
 print('Я загадаю %s-x значное число, которое вы должны отгадатью' % (NUM_DIGITS))
 print('Я дам несколько подсказок..')
@@ -47,19 +51,19 @@ while True:
     secretNum = getSecretNum()
     print('Итак я загадал число. Теперь у вас есть %s попыток, чтобы отгадать его.' % (MAX_GUEST))
 
-    quessesTaken = 1
-    while quessesTaken <= MAX_GUEST:
+    guessesTaken = 1
+    while guessesTaken <= MAX_GUEST:
         guess = ''
         while len(guess) != NUM_DIGITS or not isOnlyDigits(guess):
-            print('Попытка %s ' % (quessesTaken))
-            quess = input()\
+            print('Попытка %s ' % (guessesTaken))
+            guess = input()
 
         print(getClues(guess, secretNum))
-        quessesTaken += 1
+        guessesTaken += 1
 
         if guess == secretNum:
             break
-        if quessesTaken > MAX_GUEST:
+        if guessesTaken > MAX_GUEST:
             print('Попыток больше не осталось. Я загадал число %s.' % (secretNum))
     print('Хотите сыграть еще раз? (да или нет)')
     if not input().lower().startswith('д'):
