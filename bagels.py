@@ -1,5 +1,8 @@
 import random
 
+from hangman import guess
+from random_int import quessesTaken, quess
+
 NUM_DIGITS = 3
 MAX_GUEST = 10
 
@@ -30,3 +33,26 @@ def getClues(guess, secretNum):
 def isOnlyDigits(num):
     if num == '':
         return False
+
+    for i in num:
+        if i not in '0 1 2 3 4 5 6 7 8 9'.split():
+            return False
+    return True
+
+print('Я загадаю %s-x значное число, которое вы должны отгадатью' % (NUM_DIGITS))
+print('Я дам несколько подсказок..')
+print('Когда я говорю: Это означает:')
+print(' Cold Ни одна цифра не отгадана')
+print(' Warm Одна цифра отгадана, но не отгадана ее позиция.')
+print(' Hot  Одна цифра и ее позиция отгаданы')
+
+while True:
+    secretNum = getSecretNum()
+    print('Итак я загадал число. Теперь у вас есть %s попыток, чтобы отгадать его.' % (MAX_GUEST))
+
+    quessesTaken = 1
+    while quessesTaken <= MAX_GUEST:
+        guess = ''
+        while len(guess) != NUM_DIGITS or not isOnlyDigits(guess):
+            print('Попытка %ыЖ ' % (quessesTaken))
+            quess = input()
