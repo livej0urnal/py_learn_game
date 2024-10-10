@@ -1,12 +1,9 @@
 import random
 
-from hangman import guess
-from random_int import quessesTaken, quess
-
 NUM_DIGITS = 3
 MAX_GUEST = 10
 
-def secretNum():
+def getSecretNum():
     numbers = list(range(10))
     random.shuffle(numbers)
     secretNum = ''
@@ -54,5 +51,16 @@ while True:
     while quessesTaken <= MAX_GUEST:
         guess = ''
         while len(guess) != NUM_DIGITS or not isOnlyDigits(guess):
-            print('Попытка %ыЖ ' % (quessesTaken))
-            quess = input()
+            print('Попытка %s ' % (quessesTaken))
+            quess = input()\
+
+        print(getClues(guess, secretNum))
+        quessesTaken += 1
+
+        if guess == secretNum:
+            break
+        if quessesTaken > MAX_GUEST:
+            print('Попыток больше не осталось. Я загадал число %s.' % (secretNum))
+    print('Хотите сыграть еще раз? (да или нет)')
+    if not input().lower().startswith('д'):
+        break
