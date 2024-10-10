@@ -31,13 +31,8 @@ def getClues(guess, secretNum):
 
 
 def isOnlyDigits(num):
-    if num == '':
-        return False
-
-    for i in num:
-        if i not in '0123456789':
-            return False
-    return True
+    # Проверяем, что строка состоит только из цифр и не пуста
+    return num.isdigit()
 
 
 print('Я загадаю %s-значное число, которое вы должны отгадать.' % (NUM_DIGITS))
@@ -54,15 +49,18 @@ while True:
     guessesTaken = 1
     while guessesTaken <= MAX_GUESSES:
         guess = ''
+        # Требуем корректный ввод, пока не получим 3-значное число
         while len(guess) != NUM_DIGITS or not isOnlyDigits(guess):
-            print('Попытка %s: ' % (guessesTaken))
-            guess = input()  # исправлено на правильную переменную
+            print('Попытка %s: Введите %s-значное число.' % (guessesTaken, NUM_DIGITS))
+            guess = input().strip()  # Убираем пробелы по краям, если они есть
 
         print(getClues(guess, secretNum))
         guessesTaken += 1
 
         if guess == secretNum:
+            print('Вы угадали число за %s попыток!' % guessesTaken)
             break
+
         if guessesTaken > MAX_GUESSES:
             print('Попыток больше не осталось. Я загадал число %s.' % (secretNum))
 
