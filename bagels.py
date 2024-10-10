@@ -1,7 +1,7 @@
 import random
 
 NUM_DIGITS = 3
-MAX_GUEST = 10
+MAX_GUESSES = 10
 
 
 def getSecretNum():
@@ -35,36 +35,37 @@ def isOnlyDigits(num):
         return False
 
     for i in num:
-        if i not in '0 1 2 3 4 5 6 7 8 9'.split():
+        if i not in '0123456789':
             return False
     return True
 
 
-print('Я загадаю %s-x значное число, которое вы должны отгадать' % (NUM_DIGITS))
+print('Я загадаю %s-значное число, которое вы должны отгадать.' % (NUM_DIGITS))
 print('Я дам несколько подсказок..')
 print('Когда я говорю: Это означает:')
-print(' Cold Ни одна цифра не отгадана')
-print(' Warm Одна цифра отгадана, но не отгадана ее позиция.')
-print(' Hot  Одна цифра и ее позиция отгаданы')
+print(' Cold - Ни одна цифра не отгадана')
+print(' Warm - Одна цифра отгадана, но не отгадана ее позиция.')
+print(' Hot  - Одна цифра и ее позиция отгаданы')
 
 while True:
     secretNum = getSecretNum()
-    print('Итак я загадал число. Теперь у вас есть %s попыток, чтобы отгадать его.' % (MAX_GUEST))
+    print('Итак, я загадал число. Теперь у вас есть %s попыток, чтобы отгадать его.' % (MAX_GUESSES))
 
     guessesTaken = 1
-    while guessesTaken <= MAX_GUEST:
+    while guessesTaken <= MAX_GUESSES:
         guess = ''
         while len(guess) != NUM_DIGITS or not isOnlyDigits(guess):
-            print('Попытка %s ' % (guessesTaken))
-            guess = input()
+            print('Попытка %s: ' % (guessesTaken))
+            guess = input()  # исправлено на правильную переменную
 
         print(getClues(guess, secretNum))
         guessesTaken += 1
 
         if guess == secretNum:
             break
-        if guessesTaken > MAX_GUEST:
+        if guessesTaken > MAX_GUESSES:
             print('Попыток больше не осталось. Я загадал число %s.' % (secretNum))
+
     print('Хотите сыграть еще раз? (да или нет)')
     if not input().lower().startswith('д'):
         break
