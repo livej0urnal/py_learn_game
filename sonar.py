@@ -59,5 +59,7 @@ def makeMove(board, chests, x, y):
     else:
         if smallestDistance < 10:
             board[x][y] = str(smallestDistance)
+            return 'Сундук с сокровищами обнаружен на расстоянии %s от гидролокатора.' % (smallestDistance)
         else:
             board[x][y] = 'X'
+            return 'Гидролокатор ничего не обнаружил. Все сундуки с сокровищами вне пределов досягаемости.'
