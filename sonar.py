@@ -28,3 +28,28 @@ def drawBoard(board):
         else:
             extraSpace = ''
         boardRow = ''
+        for column in range(60):
+            boardRow += board[column][row]
+    print('%s%s %s' % (extraSpace, row, boardRow, row))
+    print()
+    print(' ' + ('0123456789' * 6))
+    print(tensDigitsLine)
+
+def getRandomChest(numChests):
+    chests = []
+    while len(chests) < numChests:
+        newChest = [random.randint(0, 59), random.randint(0, 14)]
+        if newChest not in chests:
+            chests.append(newChest)
+    return chests
+
+def isOnBoard(x, y):
+    return x >= 0 and x <= 59 and y >= 0 and y <= 14
+
+def makeMove(board, chests, x, y):
+    smallestDistance = 100
+    for cx, cy in chests:
+        distance = math.sqrt((cx - x) * (cx - x) + (cy - y) * (cy - y))
+        if distance < smallestDistance:
+            smallestDistance = distance
+        smallestDistance = round(smallestDistance)
