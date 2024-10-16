@@ -1,60 +1,87 @@
+# Охотник за сокровищами
+
 import random
 import sys
 import math
 
 
 def getNewBoard():
+    # Создать структуру данных нового игрового поля размером 60х15.
     board = []
-    for x in range(60):
+    for x in range(60):  # Главный список из 60 списков.
         board.append([])
-    for y in range(15):
-        if random.randint(0, 1) == 0:
-            board[x].append('~')
-        else:
-            board[x].append('`')
+        for y in range(15):  # Каждый список в главном списке содержит 15 односимвольных строк.
+            # Для создания океана используем разные символы, чтобы сделать его реалистичнее.
+            if random.randint(0, 1) == 0:
+                board[x].append('~')
+            else:
+                board[x].append('`')
     return board
 
+
 def drawBoard(board):
-    tensDigitsLine = ''
+    # Изобразить структуру данных игрового поля.
+    tensDigitsLine = ' '  # Создать место для чисел вниз по левой стороне поля.
     for i in range(1, 6):
         tensDigitsLine += (' ' * 9) + str(i)
+
+    # Вывести числа в верхней части поля.
     print(tensDigitsLine)
     print(' ' + ('0123456789' * 6))
     print()
 
+    # Вывести каждый из 15 рядов.
     for row in range(15):
+        # К однозначным числам нужно добавить дополнительный пробел.
         if row < 10:
             extraSpace = ' '
         else:
             extraSpace = ''
+
+        # Создать строку для этого ряда на игровом поле.
         boardRow = ''
         for column in range(60):
             boardRow += board[column][row]
-    print('%s%s %s' % (extraSpace, row, boardRow, row))
+
+        print('%s%s %s %s' % (extraSpace, row, boardRow, row))
+
+    # Вывести числа в нижней части поля.
     print()
     print(' ' + ('0123456789' * 6))
     print(tensDigitsLine)
 
-def getRandomChest(numChests):
+
+def getRandomChests(numChests):
+    # Создать список структур данных сундука (двухэлементные списки целочисленных координат x и y)).
     chests = []
     while len(chests) < numChests:
         newChest = [random.randint(0, 59), random.randint(0, 14)]
-        if newChest not in chests:
+        if newChest not in chests:  # Убедиться, что сундука здесь еще нет.
             chests.append(newChest)
     return chests
 
+
 def isOnBoard(x, y):
+    # Возвращать True, если координаты есть на поле; в противном случае возвращать False.
     return x >= 0 and x <= 59 and y >= 0 and y <= 14
 
+
 def makeMove(board, chests, x, y):
-    smallestDistance = 100
+    # Изменить структуру данных поля, используя символ гидролокатора. Удалить сундуки
+    # с сокровищами из списка с сундуками, как только их нашли. Вернуть False, если это
+    # недопустимый ход. В противном случае, вернуть строку с результатом этого хода.
+    smallestDistance = 100  # Все сундуки будут расположены ближе, чем на расстоянии в 100 единиц.
     for cx, cy in chests:
         distance = math.sqrt((cx - x) * (cx - x) + (cy - y) * (cy - y))
-        if distance < smallestDistance:
+
+        if distance < smallestDistance:  # Нам нужен ближайший сундук с сокровищами.
             smallestDistance = distance
+
     smallestDistance = round(smallestDistance)
+
     if smallestDistance == 0:
-        chests.remove((x, y))
+        # Координаты xy попали прямо в сундук с сокровищами!
+        chests.remove([x, y])
         return 'Вы нашли сундук с сокровищами на затонувшем судне!'
     else:
         if smallestDistance < 10:
@@ -64,18 +91,23 @@ def makeMove(board, chests, x, y):
             board[x][y] = 'X'
             return 'Гидролокатор ничего не обнаружил. Все сундуки с сокровищами вне пределов досягаемости.'
 
+
 def enterPlayerMove(previousMoves):
+    # Позволить игроку сделать ход. Вернуть двухэлементный список с целыми координатами x и y.
     print('Где следует опустить гидролокатор? (координаты: 0-59 0-14) (или введите "выход")')
     while True:
         move = input()
         if move.lower() == 'выход':
-            print('Thanks for playing!')
+            print('Спасибо за игру!')
             sys.exit()
+
         move = move.split()
         if len(move) == 2 and move[0].isdigit() and move[1].isdigit() and isOnBoard(int(move[0]), int(move[1])):
             if [int(move[0]), int(move[1])] in previousMoves:
                 print('Здесь вы уже опускали гидролокатор.')
                 continue
+            return [int(move[0]), int(move[1])]
+
         print('Введите число от 0 до 59, потом пробел, а затем число от 0 до 14.')
 
 
@@ -178,4 +210,3 @@ while True:
     print('Хотите сыграть еще раз? (да или нет)')
     if not input().lower().startswith('д'):
         sys.exit()
-
